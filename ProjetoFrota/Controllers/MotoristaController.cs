@@ -5,7 +5,7 @@ namespace ProjetoFrota.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    public class Viagem : ControllerBase
+    public class MotoristaController : ControllerBase
     {
     }
 }

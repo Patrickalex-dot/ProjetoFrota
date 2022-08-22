@@ -1,10 +1,8 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
+﻿using consoleFrota;
 
-namespace consoleFrota
+namespace ProjetoFrota.ViewModelAtualizar
 {
-    public class Viagem
+    public class AtualizarViagemViewModel
     {
         public int id { get; set; }
         public string CidadePartida { get; set; }

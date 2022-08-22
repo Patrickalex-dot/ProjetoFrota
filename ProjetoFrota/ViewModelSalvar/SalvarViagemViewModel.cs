@@ -1,10 +1,8 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
+﻿using consoleFrota;
 
-namespace consoleFrota
+namespace ProjetoFrota.ViewModelSalvar
 {
-    public class Viagem
+    public class SalvarViagemViewModel
     {
         public int id { get; set; }
         public string CidadePartida { get; set; }
