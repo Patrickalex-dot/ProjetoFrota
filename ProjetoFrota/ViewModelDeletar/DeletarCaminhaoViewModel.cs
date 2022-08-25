@@ -1,6 +1,6 @@
 ﻿namespace ProjetoFrota.ViewModelDeletar
 {
-    public class DeletarCaminhaViewModel
+    public class DeletarCaminhaoViewModel
     {
         public int Id { get; set; }
         public string Modelo { get; set; }

@@ -2,5 +2,6 @@
 {
     public class CaminhaoRepository
     {
+        private readonly string cnn =
     }
 }

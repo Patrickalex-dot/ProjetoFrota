@@ -1,9 +1,11 @@
-﻿
-using ProjetoFrota.Models;
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Threading.Tasks;
 
-namespace ProjetoFrota.ViewModelAtualizar
+namespace ProjetoFrota.Models
 {
-    public class CadastrarViagemViewModel
+    public class ViagemModel
     {
         public int id { get; set; }
         public string CidadePartida { get; set; }

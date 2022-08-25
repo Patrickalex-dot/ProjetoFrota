@@ -1,4 +1,5 @@
-﻿using consoleFrota;
+﻿
+using ProjetoFrota.Models;
 
 namespace ProjetoFrota.ViewModelDeletar
 {
@@ -7,7 +8,7 @@ namespace ProjetoFrota.ViewModelDeletar
         public int id { get; set; }
         public string CidadePartida { get; set; }
         public string CidadeDestino { get; set; }
-        public Caminhao Caminhao { get; set; }
-        public Motorista Motorista { get; set; }
+        public CaminhaoModel Caminhao { get; set; }
+        public MotoristaModel Motorista { get; set; }
     }
 }

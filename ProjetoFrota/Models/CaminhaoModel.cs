@@ -1,14 +1,14 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Text;
+using System.Linq;
+using System.Threading.Tasks;
 
-namespace consoleFrota
+namespace ProjetoFrota.Models
 {
-    public class Caminhao
+    public class CaminhaoModel
     {
         public int Id { get; set; }
         public string Modelo { get; set; }
         public string Placa { get; set; }
-
     }
 }

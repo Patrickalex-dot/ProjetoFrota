@@ -1,10 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Text;
+using System.Linq;
+using System.Threading.Tasks;
 
-namespace consoleFrota
+namespace ProjetoFrota.Models
 {
-    public  class Motorista
+    public class MotoristaModel
     {
         public string Nome { get; set; }
         public string Endereco { get; set; }
