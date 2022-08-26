@@ -7,7 +7,8 @@ namespace ProjetoFrota.Models
 {
     public class ViagemModel
     {
-        public int id { get; set; }
+        public int Id { get; set; }
+        public string Token { get; set; }
         public string CidadePartida { get; set; }
         public string CidadeDestino { get; set; }
         public CaminhaoModel Caminhao { get; set; }
