@@ -40,7 +40,7 @@ namespace ProjetoFrota.Controllers
 
         }
         [HttpPut]
-        public IActionResult Atualizar(ViewModelAtualizar.AtualizarCaminhaoViewModel atualizarCaminhao)
+        public IActionResult Atualizar(CaminhaoModel atualizarCaminhao)
         {
             
             if (atualizarCaminhao.Placa == null)
@@ -58,7 +58,7 @@ namespace ProjetoFrota.Controllers
 
         }
         [HttpDelete]
-        public IActionResult Deletar(ViewModelDeletar.DeletarCaminhaoViewModel deletarCaminhao)
+        public IActionResult Deletar(CaminhaoModel deletarCaminhao)
         {
             if (deletarCaminhao.Placa == null)
                 return Ok("Nenhuma placa foi informada");

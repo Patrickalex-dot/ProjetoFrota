@@ -36,7 +36,7 @@ namespace ProjetoFrota.Controllers
             return Ok(motoristas);
         }
         [HttpPut]
-        public IActionResult Atualizar(ViewModelAtualizar.AtualizarMotoristaViewModel atualizarMotorista)
+        public IActionResult Atualizar(MotoristaModel atualizarMotorista)
         {
             if (atualizarMotorista == null)
                 return NoContent();
@@ -58,7 +58,7 @@ namespace ProjetoFrota.Controllers
             return Ok(mEncontrado);
         }
         [HttpDelete]
-        public IActionResult Deletar(ViewModelDeletar.DeletarMotoristaViewModel deletarMotorista)
+        public IActionResult Deletar(MotoristaModel deletarMotorista)
         {
             
 

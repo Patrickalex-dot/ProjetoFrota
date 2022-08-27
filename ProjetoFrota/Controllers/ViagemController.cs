@@ -56,7 +56,7 @@ namespace ProjetoFrota.Controllers
 
         }
         [HttpPut]
-        public IActionResult Atualizar(ViewModelAtualizar.AtualizarViagemViewModel atualizarViagem)
+        public IActionResult Atualizar(ViagemModel atualizarViagem)
         {
             if (atualizarViagem == null)
                 return NoContent();
@@ -83,6 +83,21 @@ namespace ProjetoFrota.Controllers
 
             
 
+        }
+        [HttpDelete]
+        public IActionResult Deletar(ViagemModel deletarViagem)
+        {
+            if (deletarViagem.Token == null)
+                return Ok("Nenhum registro de token encontrado");
+            var vEncontrada = viagens.FirstOrDefault(v => v.Token == deletarViagem.Token);
+            if (vEncontrada == null)
+                return Ok("Não há nenhum registro correspondente a esse Token");
+
+            viagens.Remove(vEncontrada);
+            return Ok("Removido com sucesso");
+            
+
+            
         }
     }
 }
