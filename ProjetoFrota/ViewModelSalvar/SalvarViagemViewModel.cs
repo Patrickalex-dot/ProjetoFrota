@@ -6,6 +6,7 @@ namespace ProjetoFrota.ViewModelSalvar
     public class SalvarViagemViewModel
     {
         public int id { get; set; }
+        public string Token { get; set; }
         public string CidadePartida { get; set; }
         public string CidadeDestino { get; set; }
         public CaminhaoModel Caminhao { get; set; }
