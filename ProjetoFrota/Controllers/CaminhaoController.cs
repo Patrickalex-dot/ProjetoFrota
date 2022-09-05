@@ -1,6 +1,4 @@
-﻿using consoleFrota;
-using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Mvc;
 using ProjetoFrota.Models;
 using ProjetoFrota.Repositorys;
 using ProjetoFrota.ViewModelAtualizar;
@@ -13,10 +11,20 @@ namespace ProjetoFrota.Controllers
     [ApiController]
     public class CaminhaoController : ControllerBase
     {
-        public readonly static List<CaminhaoModel> caminhoes = new List<CaminhaoModel>();
+       
+        private readonly CaminhaoRepository _caminhaoRepository = new CaminhaoRepository();
+        [HttpGet]
+        public IActionResult GetAll()
+        {
+            return Ok(new JsonResult(new
+            {
+                sucesso = true,
+                
+            }));
+        }
 
         [HttpPost]
-        public IActionResult Salvar (CaminhaoModel caminhao)
+        public IActionResult Salvar (ViewModelSalvar.SalvarCaminhaoViewModel caminhao)
         {
             if (caminhao == null)
                 return Ok("Nenhum dado do caminhão foi informado");
@@ -25,12 +33,13 @@ namespace ProjetoFrota.Controllers
             if (caminhao.Placa == null)
                 return Ok("Placa do caminhão não informada");
 
-            caminhoes.Add(caminhao);
+            _caminhaoRepository.Salvar(caminhao);
             return Ok("Caminhão adicionado com sucesso ");
         }
         [HttpGet]
         public IActionResult BuscarTodos()
         {
+            var caminhoes = _caminhaoRepository.BuscarTodos();
             if (caminhoes == null || !caminhoes.Any())
             
                 return NotFound(new { mensage = $"Lista vazia." });
@@ -40,13 +49,14 @@ namespace ProjetoFrota.Controllers
 
         }
         [HttpPut]
-        public IActionResult Atualizar(CaminhaoModel atualizarCaminhao)
+        public IActionResult Atualizar(AtualizarCaminhaoViewModel atualizarCaminhao)
         {
+            
             
             if (atualizarCaminhao.Placa == null)
                 return Ok("Nenhuma placa foi informada ");
 
-            var cEncontrado = caminhoes.FirstOrDefault(c => c.Placa == atualizarCaminhao.Placa);
+            var cEncontrado = _caminhaoRepository.BuscarPorPlaca(atualizarCaminhao.Placa);
 
             if (cEncontrado == null)
                 return NotFound("Não há nenhum registro com essa placa.");
@@ -58,16 +68,16 @@ namespace ProjetoFrota.Controllers
 
         }
         [HttpDelete]
-        public IActionResult Deletar(CaminhaoModel deletarCaminhao)
+        public IActionResult Deletar(ViewModelDeletar.DeletarCaminhaoViewModel deletarCaminhao)
         {
             if (deletarCaminhao.Placa == null)
                 return Ok("Nenhuma placa foi informada");
-            var cEncontrado = caminhoes.FirstOrDefault(c => c.Placa == deletarCaminhao.Placa);
+            var cEncontrado = _caminhaoRepository.BuscarPorPlaca(deletarCaminhao.Placa);
 
             if (cEncontrado == null)
                 return Ok("Não há registro com essa placa.");
 
-            caminhoes.Remove(cEncontrado);
+            _caminhaoRepository.Deletar(cEncontrado.Placa);
                 return Ok("Removido com sucesso!");
 
             

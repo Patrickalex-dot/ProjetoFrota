@@ -11,7 +11,7 @@ namespace ProjetoFrota.Repositorys
 {
     public class CaminhaoRepository
     {
-        private readonly string Conexao = @"Data Source=ITELABD14\SQLEXPRESS;Initial Catalog=ProjetoFrota;Integrated Security=True;";
+        private readonly string Conexao = @"Data Source=PATRICK\SQLEXPRESS;Initial Catalog=ProjetoFrota;Integrated Security=True;";
 
         public bool Salvar(SalvarCaminhaoViewModel cadastrarCaminhao)
         {
@@ -38,9 +38,9 @@ namespace ProjetoFrota.Repositorys
             }
             
         }
-        public List<CaminhaoDto> BuscarPorPlaca(string placa)
+        public CaminhaoDto BuscarPorPlaca(string placa)
         {
-            List<CaminhaoDto> CaminhoesEncontrados;
+            CaminhaoDto CaminhoesEncontrados;
             try
             {
                 var query = @"SELECT CaminhaoId,Modelo,Placa FROM Caminhao
@@ -51,7 +51,7 @@ namespace ProjetoFrota.Repositorys
                     {
                         placa
                     };
-                    CaminhoesEncontrados = connection.Query<CaminhaoDto>(query, parametros).ToList();
+                    CaminhoesEncontrados = connection.Query<CaminhaoDto>(query, parametros).FirstOrDefault();
                 }
                 return CaminhoesEncontrados;
             }
@@ -80,6 +80,7 @@ namespace ProjetoFrota.Repositorys
                 return null;
             }
         }
+
         public void Atualizar (AtualizarCaminhaoViewModel caminhao)
         {
             try
@@ -122,15 +123,15 @@ namespace ProjetoFrota.Repositorys
             return caminhao;
 
         }
-        public void Deletar (int Id)
+        public void Deletar (string Placa)
         {
             try
             {
-                var query = "DELETE FROM Caminhao WHERE CaminhaoId = @Id";
+                var query = "DELETE FROM Caminhao WHERE Placa = @placa";
                 using (var sql = new SqlConnection(Conexao))
                 {
                     SqlCommand command = new SqlCommand(query, sql);
-                    command.Parameters.AddWithValue("@Id", Id);
+                    command.Parameters.AddWithValue("@placa", Placa);
                     command.Connection.Open();
                     command.ExecuteNonQuery();
                 }
