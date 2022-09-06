@@ -11,5 +11,9 @@ namespace ProjetoFrota.Dto_s
         public string Endereco { get; set; }
         public int Id { get; set; }
         public string Cpf { get; set; }
+        public MotoristaDto()
+        {
+
+        }
     }
 }

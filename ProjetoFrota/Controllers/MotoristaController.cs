@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using ProjetoFrota.Models;
+using ProjetoFrota.Repositorys;
 using System.Collections.Generic;
 using System.Linq;
 
@@ -10,10 +11,18 @@ namespace ProjetoFrota.Controllers
     [ApiController]
     public class MotoristaController : ControllerBase
     {
-        private static readonly List<MotoristaModel> motoristas = new List<MotoristaModel>();
+        private readonly MotoristaRepository _motoristaRepository = new MotoristaRepository();
+        public IActionResult GetAll()
+        {
+            return Ok(new JsonResult(new
+            {
+                sucesso = true,
+
+            }));
+        }
 
         [HttpPost]
-        public IActionResult Salvar (MotoristaModel motorista)
+        public IActionResult Salvar (ViewModelSalvar.SalvarMotoristaViewModel motorista)
         {
             if (motorista == null)
                 return Ok("Nenhum dado do motorista foi informado");
@@ -24,36 +33,29 @@ namespace ProjetoFrota.Controllers
             if (motorista.Cpf == null)
                 return Ok("Cpf do motorista não informado");
 
-            motoristas.Add(motorista);
+            _motoristaRepository.Salvar(motorista);
             return Ok("Motorista adicionado com sucesso");
 
         }
         [HttpGet]
         public IActionResult BuscarTodos()
         {
-            if (motoristas == null || !motoristas.Any())
-                return NotFound(new { mensage = $"Lista Vazia." });
-            return Ok(motoristas);
+            var Motoristas = _motoristaRepository.BuscarTodos();
+            if (Motoristas == null || !Motoristas.Any())
+                return NotFound(new { mesage = $"Lista Vazia." });
+            return Ok(Motoristas);
         }
         [HttpPut]
-        public IActionResult Atualizar(MotoristaModel atualizarMotorista)
+        public IActionResult Atualizar(ViewModelAtualizar.AtualizarMotoristaViewModel atualizarMotorista)
         {
-            if (atualizarMotorista == null)
-                return NoContent();
-
-            if (atualizarMotorista.Nome == null)
-                return Ok("Nome do motorista não foi informado");
-            if (atualizarMotorista.Endereco == null)
-                return Ok("Endereco do motorista não foi informado");
+            
             if (atualizarMotorista.Cpf == null)
                 return Ok("Cpf do motorista não foi informado");
-            var mEncontrado = motoristas.FirstOrDefault(m => m.Nome == atualizarMotorista.Nome);
+            var mEncontrado = _motoristaRepository.BuscarPorCpf(atualizarMotorista.Cpf);
 
             if (mEncontrado == null)
                 return Ok("não há nenhum registro com esse nome");
-            mEncontrado.Nome = atualizarMotorista.Nome;
-            mEncontrado.Endereco = atualizarMotorista.Endereco;
-            mEncontrado.Cpf = atualizarMotorista.Cpf;
+            
 
             return Ok(mEncontrado);
         }

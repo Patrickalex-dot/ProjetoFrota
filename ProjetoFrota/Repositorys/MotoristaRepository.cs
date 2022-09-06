@@ -62,7 +62,25 @@ namespace ProjetoFrota.Repositorys
             
 
         }
-        public void Atualizar(ViewModelAtualizar.AtualizarMotoristaViewModel motorista, string cpf)
+        public List<MotoristaDto> BuscarTodos()
+        {
+            List<MotoristaDto> MotoristaEncontrado;
+            try
+            {
+                var query = @"SELECT MotoristaId,Nome,Endereco,Cpf FROM Motorista";
+                using (var connection = new SqlConnection(Conexao))
+                {
+                    MotoristaEncontrado = connection.Query<MotoristaDto>(query).ToList();
+                }
+                return MotoristaEncontrado;
+            }
+            catch (Exception execao)
+            {
+                Console.WriteLine("Erro:" + execao.Message);
+                return null;
+            }
+        }
+        public void Atualizar(ViewModelAtualizar.AtualizarMotoristaViewModel motorista)
         {
             try
             {
