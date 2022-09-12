@@ -53,6 +53,10 @@ namespace ProjetoFrota.Controllers
                 return Ok("Cpf do motorista não foi informado");
             var mEncontrado = _motoristaRepository.BuscarPorCpf(atualizarMotorista.Cpf);
 
+            mEncontrado.Nome = atualizarMotorista.Nome;
+            mEncontrado.Cpf = atualizarMotorista.Cpf;
+            mEncontrado.Endereco = atualizarMotorista.Endereco;
+            
             if (mEncontrado == null)
                 return Ok("não há nenhum registro com esse nome");
             
@@ -60,18 +64,18 @@ namespace ProjetoFrota.Controllers
             return Ok(mEncontrado);
         }
         [HttpDelete]
-        public IActionResult Deletar(MotoristaModel deletarMotorista)
+        public IActionResult Deletar(ViewModelDeletar.DeletarMotoristaViewModel deletarMotorista)
         {
             
 
-            if (deletarMotorista.Nome == null)
-                return Ok("Nome do motorista não foi informado");
-            
-            var motorista = motoristas.FirstOrDefault(m => m.Nome == deletarMotorista.Nome);
+            if (deletarMotorista.Cpf == null)
+                return Ok("cpf do motorista não foi informado");
 
-            if (motorista == null)
+            var mEncontrado = _motoristaRepository.BuscarPorCpf(deletarMotorista.Cpf);
+
+            if (mEncontrado == null)
                 return Ok("Não há nenhum registro com esse nome");
-            motoristas.Remove(motorista);
+            _motoristaRepository.Deletar(mEncontrado.Cpf);
             return Ok("Removido com sucesso");
         }
     }

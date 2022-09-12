@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using ProjetoFrota.Models;
+using ProjetoFrota.Repositorys;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -26,10 +27,10 @@ namespace ProjetoFrota.Controllers
             return finalString;
         }
 
-        public readonly static List<ViagemModel> viagens = new List<ViagemModel>();
+        private readonly ViagemRepository _viagemRepository = new ViagemRepository();
 
         [HttpPost]
-        public IActionResult Salvar (ViagemModel viagem)
+        public IActionResult Salvar (ViewModelSalvar.SalvarViagemViewModel viagem)
         {
             if (viagem == null)
                 return Ok("Nenhum dado informado");
@@ -44,40 +45,34 @@ namespace ProjetoFrota.Controllers
 
             viagem.Token = GerarToken();
 
-            viagens.Add(viagem);
+            _viagemRepository.Salvar(viagem);
             return Ok("Viagem adicionada com sucesso");
         }
         [HttpGet]
         public IActionResult BuscarTodos()
         {
-            if (viagens == null || !viagens.Any())
+            var Viagem = _viagemRepository.BuscarTodos();
+            if (Viagem == null || !Viagem.Any())
                 return NotFound(new { mensage = $"Lista vazia" });
-            return Ok(viagens);
+            return Ok(Viagem);
 
         }
         [HttpPut]
-        public IActionResult Atualizar(ViagemModel atualizarViagem)
+        public IActionResult Atualizar(ViewModelAtualizar.AtualizarViagemViewModel atualizarViagem)
         {
-            if (atualizarViagem == null)
+            if (atualizarViagem.Token == null)
                 return NoContent();
-            if (atualizarViagem.Caminhao == null)
-                return Ok("Caminhão não foi informado");
-            if (atualizarViagem.Motorista == null)
-                return Ok("Motorista não foi informado");
-            if (atualizarViagem.CidadePartida == null)
-                return Ok("Cidade de partida não foi informada");
-            if (atualizarViagem.CidadeDestino == null)
-                return Ok("Cidade de destino não foi informada");
+            var vEncontrada = _viagemRepository.BuscarPorToken(atualizarViagem.Token);
 
-            var vEncontrada = viagens.FirstOrDefault(v => v.Token == atualizarViagem.Token);
+            vEncontrada.CidadeDestino = atualizarViagem.CidadeDestino;
+            vEncontrada.CidadePartida = atualizarViagem.CidadePartida;
+            vEncontrada.Caminhao = atualizarViagem.Caminhao;
+            vEncontrada.Motorista = atualizarViagem.Motorista;
 
             if (vEncontrada == null)
                 return Ok("Nenhuma viagem corresponde a esse token");
 
-            vEncontrada.Caminhao = atualizarViagem.Caminhao;
-            vEncontrada.Motorista = atualizarViagem.Motorista;
-            vEncontrada.CidadePartida = atualizarViagem.CidadePartida;
-            vEncontrada.CidadeDestino = atualizarViagem.CidadePartida;
+            
 
             return Ok(vEncontrada);
 
@@ -85,15 +80,15 @@ namespace ProjetoFrota.Controllers
 
         }
         [HttpDelete]
-        public IActionResult Deletar(ViagemModel deletarViagem)
+        public IActionResult Deletar(ViewModelDeletar.DeletarViagemViewModel deletarViagem)
         {
             if (deletarViagem.Token == null)
                 return Ok("Nenhum registro de token encontrado");
-            var vEncontrada = viagens.FirstOrDefault(v => v.Token == deletarViagem.Token);
+            var vEncontrada = _viagemRepository.BuscarPorToken(deletarViagem.Token);
             if (vEncontrada == null)
                 return Ok("Não há nenhum registro correspondente a esse Token");
 
-            viagens.Remove(vEncontrada);
+            _viagemRepository.Deletar(vEncontrada.Token);
             return Ok("Removido com sucesso");
             
 

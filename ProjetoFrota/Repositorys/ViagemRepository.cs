@@ -40,9 +40,9 @@ namespace ProjetoFrota.Repositorys
                 return false;
             }
         }
-        public List<ViagemDto> BuscarPorToken(string token)
+        public ViagemDto BuscarPorToken(string token)
         {
-            List<ViagemDto> ViagensEncontradas;
+            ViagemDto ViagensEncontradas;
             try
             {
                 var query = @"SELECT CidadePartida,CidadeDestino,Token,IdMotorista,IdCaminhao FROM Viagem WHERE Token = @token";
@@ -52,13 +52,31 @@ namespace ProjetoFrota.Repositorys
                     {
                         token
                     };
-                    ViagensEncontradas = connection.Query<ViagemDto>(query, parametro).ToList();
+                    ViagensEncontradas = connection.Query <ViagemDto>(query, parametro).FirstOrDefault();
                 }
                 return ViagensEncontradas;
             }
             catch (Exception ex)
             {
                 Console.WriteLine("Erro: " + ex.Message);
+                return null;
+            }
+        }
+        public List<ViagemDto> BuscarTodos()
+        {
+            List<ViagemDto> ViagemEncontrada;
+            try
+            {
+                var query = @"SELECT IdViagem,CidadePartida,CidadeDestino,IdMotorista,IdCaminhao FROM Viagem";
+                using (var connection = new SqlConnection(Conexao))
+                {
+                    ViagemEncontrada = connection.Query<ViagemDto>(query).ToList();
+                }
+                return ViagemEncontrada;
+            }
+            catch (Exception execao)
+            {
+                Console.WriteLine("Erro:" + execao.Message);
                 return null;
             }
         }

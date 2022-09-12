@@ -36,7 +36,13 @@ namespace consoleFrota
         
         static void Main(string[] args)
         {
-
+            Console.WriteLine("_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-");
+            Console.WriteLine("-_-_-_-_-_-_-_-MENU_-_-_-_-_-_-_-_");
+            Console.WriteLine("_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-");
+            Console.WriteLine("0 - Sair");
+            Console.WriteLine("1 - Cadastrar");
+            Console.WriteLine("2 - Atualizar");
+            Console.WriteLine("3 - Remover");
         }
         
     }

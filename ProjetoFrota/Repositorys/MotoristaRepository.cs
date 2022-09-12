@@ -37,9 +37,9 @@ namespace ProjetoFrota.Repositorys
                 return false;
             }
         }
-        public List<MotoristaDto> BuscarPorCpf (string cpf)
+        public MotoristaDto BuscarPorCpf (string cpf)
         {
-            List<MotoristaDto> MotoristasEncontrados;
+            MotoristaDto MotoristasEncontrados;
             try
             {
                 var query = "@SELECT MotoristaId,Nome,Cpf,Endereco FROM Motorista WHERE Cpf = @cpf";
@@ -49,7 +49,7 @@ namespace ProjetoFrota.Repositorys
                     {
                         cpf
                     };
-                    MotoristasEncontrados = connection.Query<MotoristaDto>(query, parametros).ToList();
+                    MotoristasEncontrados = connection.Query<MotoristaDto>(query, parametros).FirstOrDefault();
                 }
                 return MotoristasEncontrados;
             }
